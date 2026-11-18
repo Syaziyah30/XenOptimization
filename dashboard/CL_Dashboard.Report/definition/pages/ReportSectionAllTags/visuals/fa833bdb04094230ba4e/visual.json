@@ -1,0 +1,86 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "fa833bdb04094230ba4e",
+  "position": {
+    "x": 16,
+    "y": 1342,
+    "z": 2500,
+    "height": 40,
+    "width": 1248,
+    "tabOrder": 2500
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Flow Meter Chilled Water Supply Flow - C10A1_1_C101C_MTCHW_CH01_FIT2.PV",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "11pt",
+                      "color": "#252423"
+                    }
+                  },
+                  {
+                    "value": "  (m³/h)",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "11pt",
+                      "color": "#1f77b4"
+                    }
+                  },
+                  {
+                    "value": "    (CUP) Level 1 MT Chiller 1 Chilled Water Supply Flow Meter   |   Reference Value = 1,178.06 m³/h",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "color": "#605e5c"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#EEF3F8'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.0D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

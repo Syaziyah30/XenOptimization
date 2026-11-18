@@ -1,0 +1,1208 @@
+cultureInfo en-US
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "trend.ef_pv2_reference_kw_rt": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "EF.PV2 Reference (kW/RT)"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.ef_pv2_reference_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "EF.PV2 Reference label"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.cl1_pv_reference_kw": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CL1.PV Reference (kW)"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.cl1_pv_reference_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CL1.PV Reference label"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.tit1_pv_reference_c": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "TIT1.PV Reference (°C)"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.tit1_pv_reference_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "TIT1.PV Reference label"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.fit1_pv_reference_m_h": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "FIT1.PV Reference (m³/h)"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.fit1_pv_reference_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "FIT1.PV Reference label"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.fit2_pv_reference_m_h": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "FIT2.PV Reference (m³/h)"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.fit2_pv_reference_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "FIT2.PV Reference label"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.tit2_pv_reference_c": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "TIT2.PV Reference (°C)"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.tit2_pv_reference_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "TIT2.PV Reference label"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.tit3_pv_reference_c": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "TIT3.PV Reference (°C)"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.tit3_pv_reference_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "TIT3.PV Reference label"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.tit4_pv_reference_c": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "TIT4.PV Reference (°C)"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.tit4_pv_reference_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "TIT4.PV Reference label"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.combined_ef_reference_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Combined EF Reference label"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.combined_variable_value": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Combined Variable Value"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Selected variable": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.combined_variable_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Combined Variable Reference"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.combined_variable_reference_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Combined Variable Reference label"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.reference_value": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Reference Value"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "trend.average_value": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Average Value"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Average": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.deviation_from_reference_": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Deviation from Reference %"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "dimtag.shortname": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "DimTag",
+			          "ConceptualProperty": "ShortName"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Variable": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.scatter_pearson_r": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Scatter Pearson r"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "r": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.scatter_strength": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Scatter Strength"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Strength": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "combined_variables.variable": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Combined Variables",
+			          "ConceptualProperty": "Variable"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Variable": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_cl1_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb CL1.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "CL1.PV (kW)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_cl1_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb CL1.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "CL1.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_fit1_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb FIT1.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "FIT1.PV (m³/h)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_fit1_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb FIT1.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "FIT1.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_fit2_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb FIT2.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "FIT2.PV (m³/h)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_fit2_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb FIT2.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "FIT2.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_tit1_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb TIT1.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT1.PV (°C)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_tit1_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb TIT1.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT1.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_tit2_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb TIT2.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT2.PV (°C)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_tit2_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb TIT2.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT2.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_tit3_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb TIT3.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT3.PV (°C)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_tit3_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb TIT3.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT3.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_tit4_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb TIT4.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT4.PV (°C)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_tit4_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb TIT4.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT4.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_ef_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb EF.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "EF.PV (%)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cmb_ef_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Cmb EF.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "EF.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.ef_pv2_avg_reference_kw_rt": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "EF.PV2 Avg Reference (kW/RT)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "EF.PV2 reference (kW/RT)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.ef_pv2_avg_reference_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "EF.PV2 Avg Reference label"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "EF.PV2 reference value": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.avg_reference_value": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Avg Reference Value"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Reference (avg)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.deviation_from_avg_reference_": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "Deviation from Avg Reference %"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Dev. %": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cl1_pv_avg_reference_kw": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CL1.PV Avg Reference (kW)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "CL1.PV reference (kW)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cl1_pv_avg_reference_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CL1.PV Avg Reference label"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "CL1.PV reference value": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_ef_pv2": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc EF.PV2"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "EF.PV2 (kW/RT)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_ef_pv2_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc EF.PV2 Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "EF.PV2 reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_fit1_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc FIT1.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "FIT1.PV (m³/h)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_fit1_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc FIT1.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "FIT1.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_fit2_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc FIT2.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "FIT2.PV (m³/h)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_fit2_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc FIT2.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "FIT2.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_tit1_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc TIT1.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT1.PV (°C)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_tit1_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc TIT1.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT1.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_tit2_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc TIT2.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT2.PV (°C)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_tit2_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc TIT2.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT2.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_tit3_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc TIT3.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT3.PV (°C)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_tit3_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc TIT3.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT3.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_tit4_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc TIT4.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT4.PV (°C)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_tit4_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc TIT4.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TIT4.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_ef_pv": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc EF.PV"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "EF.PV (%)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.clc_ef_pv_reference": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CLc EF.PV Reference"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "EF.PV reference": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cl_scatter_x_value": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CL Scatter X Value"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Selected variable": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cl_scatter_pearson_r": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CL Scatter Pearson r"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "r": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "trend.cl_scatter_strength": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Trend",
+			          "ConceptualProperty": "CL Scatter Strength"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Strength": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "cl_combined_variables.variable": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "CL Combined Variables",
+			          "ConceptualProperty": "Variable"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Variable": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
+			}
+		contentType: json
+

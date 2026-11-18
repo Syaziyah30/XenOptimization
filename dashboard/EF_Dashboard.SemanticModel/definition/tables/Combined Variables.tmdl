@@ -1,0 +1,76 @@
+table 'Combined Variables'
+	lineageTag: 2c7d937e-9610-412e-9919-54efeb0ccc65
+
+	column Variable
+		dataType: string
+		lineageTag: 6437fbe3-5a21-444b-b147-489c7b0f930d
+		summarizeBy: none
+		sourceColumn: [Variable]
+		sortByColumn: Order
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4b89188d-2ea8-4b7c-a910-8ed32f35ce60
+		summarizeBy: none
+		sourceColumn: [Order]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Short
+		dataType: string
+		isHidden
+		lineageTag: 437b530a-1ea8-4df7-b886-833a6687b6f1
+		summarizeBy: none
+		sourceColumn: [Short]
+		sortByColumn: Order
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tag
+		dataType: string
+		isHidden
+		lineageTag: a6bded77-df62-4d78-97df-64f5262e1122
+		summarizeBy: none
+		sourceColumn: [Tag]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		isHidden
+		lineageTag: 895773d6-2d38-4391-a0bf-b42a975a779b
+		summarizeBy: none
+		sourceColumn: [Description]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Unit
+		dataType: string
+		isHidden
+		lineageTag: 7991cfc6-56a5-417e-9bc9-ca75e2c64353
+		summarizeBy: none
+		sourceColumn: [Unit]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Combined Variables' = calculated
+		mode: import
+		source =
+				DATATABLE (
+				    "Variable", STRING, "Order", INTEGER, "Short", STRING, "Tag", STRING, "Description", STRING, "Unit", STRING,
+				    {
+				        { "CL1.PV - Cooling Load (kW)", 0, "CL1.PV", "C10A1_1_C101C_MTCHW_CH01_CL1.PV", "Cooling Load", "kW" },
+				        { "FIT1.PV - Condenser Water Return Flow (m³/h)", 1, "FIT1.PV", "C10A1_1_C101C_MTCHW_CH01_FIT1.PV", "Condenser Water Return Flow", "m³/h" },
+				        { "FIT2.PV - Chilled Water Supply Flow (m³/h)", 2, "FIT2.PV", "C10A1_1_C101C_MTCHW_CH01_FIT2.PV", "Chilled Water Supply Flow", "m³/h" },
+				        { "TIT1.PV - Condenser Water Supply Temp (°C)", 3, "TIT1.PV", "C10A1_1_C101C_MTCHW_CH01_TIT1.PV", "Condenser Water Supply Temp", "°C" },
+				        { "TIT2.PV - Condenser Water Return Temp (°C)", 4, "TIT2.PV", "C10A1_1_C101C_MTCHW_CH01_TIT2.PV", "Condenser Water Return Temp", "°C" },
+				        { "TIT3.PV - Chilled Water Supply Temp (°C)", 5, "TIT3.PV", "C10A1_1_C101C_MTCHW_CH01_TIT3.PV", "Chilled Water Supply Temp", "°C" },
+				        { "TIT4.PV - Chilled Water Return Temp (°C)", 6, "TIT4.PV", "C10A1_1_C101C_MTCHW_CH01_TIT4.PV", "Chilled Water Return Temp", "°C" },
+				        { "EF.PV - Efficiency (%)", 7, "EF.PV", "C10A1_1_C101C_MTCHW_CH01_EF.PV", "Efficiency", "%" }
+				    }
+				)
+

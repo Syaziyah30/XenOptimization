@@ -1,0 +1,36 @@
+table DimPeriod
+	lineageTag: e5655a5f-36f7-4cea-bb5b-de7a816be757
+
+	column Order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d621e9d3-f1dd-4b72-a38d-2c8ce66a1b4d
+		summarizeBy: none
+		sourceColumn: Order
+
+	column Period
+		dataType: string
+		lineageTag: ddf14fe8-752d-4aef-aadb-c416fa5551b8
+		summarizeBy: none
+		sourceColumn: Period
+		sortByColumn: Order
+
+	/// Period with its month, e.g. "Hist_Value1 (Feb 2024)"
+	column PeriodLabel
+		dataType: string
+		lineageTag: 0b179659-0fcc-4125-a7f1-75ec04ea1065
+		summarizeBy: none
+		sourceColumn: PeriodLabel
+		sortByColumn: Order
+
+	partition DimPeriod = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [Order = Int64.Type, Period = text, PeriodLabel = text], {{1, "Hist_Value1", "Hist_Value1 (Feb 2024)"}, {2, "Hist_Value2", "Hist_Value2 (Aug 2024)"}, {3, "Hist_Value3", "Hist_Value3 (Feb 2025)"}, {4, "Hist_Value4", "Hist_Value4 (Aug 2025)"}, {5, "Hist_Value5", "Hist_Value5 (Feb 2026)"}})
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

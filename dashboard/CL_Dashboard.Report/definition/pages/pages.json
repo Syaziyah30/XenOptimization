@@ -1,0 +1,10 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.1.0/schema.json",
+  "pageOrder": [
+    "c6e08ab2c3a08490c2eb",
+    "ReportSectionCLPearsonScatter",
+    "ReportSectionAllTags",
+    "ReportSectionAverageVariable"
+  ],
+  "activePageName": "c6e08ab2c3a08490c2eb"
+}

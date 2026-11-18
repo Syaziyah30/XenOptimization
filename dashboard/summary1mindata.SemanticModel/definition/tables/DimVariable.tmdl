@@ -1,0 +1,57 @@
+table DimVariable
+	lineageTag: 097e6aca-41df-47d1-bace-0e0356d9a120
+
+	column Order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0afa40bd-1149-421f-bc1a-651dcd71b6ad
+		summarizeBy: none
+		sourceColumn: Order
+
+	column Variable
+		dataType: string
+		lineageTag: 267d8794-5eaf-495b-b7c3-091f5ed3c35a
+		summarizeBy: none
+		sourceColumn: Variable
+		sortByColumn: Order
+
+	column Description
+		dataType: string
+		lineageTag: 93722602-a6a4-40c9-ba21-de31afaf1cdc
+		summarizeBy: none
+		sourceColumn: Description
+		sortByColumn: Order
+
+	column Unit
+		dataType: string
+		lineageTag: da70351d-0ec0-43fa-a32a-c7058b0e72cd
+		summarizeBy: none
+		sourceColumn: Unit
+
+	column ChartTitle
+		dataType: string
+		lineageTag: afc83761-d75f-41fa-90a0-e2a3f7c2a558
+		summarizeBy: none
+		sourceColumn: ChartTitle
+		sortByColumn: Order
+
+	column FormatString
+		dataType: string
+		isHidden
+		lineageTag: fae02f89-e0c4-4a6c-86da-30a8047f4a47
+		summarizeBy: none
+		sourceColumn: FormatString
+
+	partition DimVariable = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				        type table [Order = Int64.Type, Variable = text, Description = text, Unit = text, ChartTitle = text, FormatString = text],
+				        {{1, "CL1.PV", "Cooling Load", "kW", "CL1.PV – Cooling Load (kW)", "#,##0.00"}, {2, "EF.PV2", "Efficiency", "kW/RT", "EF.PV2 – Efficiency (kW/RT)", "0.0000"}, {3, "FIT1.PV", "Condenser Water Return Flow", "m³/h", "FIT1.PV – Condenser Water Return Flow (m³/h)", "#,##0.00"}, {4, "FIT2.PV", "Chilled Water Supply Flow", "m³/h", "FIT2.PV – Chilled Water Supply Flow (m³/h)", "#,##0.00"}, {5, "TIT1.PV", "Condenser Water Supply Temp", "°C", "TIT1.PV – Condenser Water Supply Temp (°C)", "0.00"}, {6, "TIT2.PV", "Condenser Water Return Temp", "°C", "TIT2.PV – Condenser Water Return Temp (°C)", "0.00"}, {7, "TIT3.PV", "Chilled Water Supply Temp", "°C", "TIT3.PV – Chilled Water Supply Temp (°C)", "0.000"}, {8, "TIT4.PV", "Chilled Water Return Temp", "°C", "TIT4.PV – Chilled Water Return Temp (°C)", "0.000"}, {9, "EF.PV", "Efficiency (power loading)", "%", "EF.PV – Efficiency (power loading) (%)", "0.00"}})
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "91f8702f4bfd4c149468",
+  "position": {
+    "x": 16,
+    "y": 706,
+    "z": 1300,
+    "height": 40,
+    "width": 1248,
+    "tabOrder": 1300
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Efficiency  - C10A1_1_C101C_MTCHW_CH01_EF.PV2",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "11pt",
+                      "color": "#252423"
+                    }
+                  },
+                  {
+                    "value": "  (kW/RT)",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "11pt",
+                      "color": "#1f77b4"
+                    }
+                  },
+                  {
+                    "value": "    (CUP) Level 1 MT Chiller 1 Efficiency   |   Reference Value = 0.411 kW/RT",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "color": "#605e5c"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#EEF3F8'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.0D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

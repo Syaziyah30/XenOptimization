@@ -1,0 +1,87 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 618.38305001469348,
+            "y": -44.844697959845689
+          },
+          "nodeIndex": "DimPeriod",
+          "nodeLineageTag": "8c518b17-b358-4b40-87fd-e15f0f70f34a",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": -26.859587180245796
+          },
+          "nodeIndex": "DimTag",
+          "nodeLineageTag": "7128bd7c-c485-47ff-8ec9-e5be9c74ed37",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 334.20156119318506,
+            "y": -50
+          },
+          "nodeIndex": "Trend",
+          "nodeLineageTag": "55becab9-da6b-4080-a3b5-80bc7befb518",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 852.38305001469348,
+            "y": 38
+          },
+          "nodeIndex": "Combined Variables",
+          "nodeLineageTag": "2c7d937e-9610-412e-9919-54efeb0ccc65",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1086.3830500146935,
+            "y": 44
+          },
+          "nodeIndex": "CL Combined Variables",
+          "nodeLineageTag": "0a78e509-0c20-499e-a79b-dfeab65dc5dd",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

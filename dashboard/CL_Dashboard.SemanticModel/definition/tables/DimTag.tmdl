@@ -1,0 +1,75 @@
+table DimTag
+	lineageTag: 7128bd7c-c485-47ff-8ec9-e5be9c74ed37
+
+	column SortOrder
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7cc66500-8d65-4224-98c7-d29a5c8e895b
+		summarizeBy: none
+		sourceColumn: SortOrder
+
+	column Tag
+		dataType: string
+		lineageTag: abf9d113-6435-4900-8cba-2382dcb3c74b
+		summarizeBy: none
+		sourceColumn: Tag
+		sortByColumn: SortOrder
+
+	column ShortName
+		dataType: string
+		lineageTag: d9a981bd-47eb-4fcc-8fc3-c5ae53a0dc28
+		summarizeBy: none
+		sourceColumn: ShortName
+		sortByColumn: SortOrder
+
+	column Description
+		dataType: string
+		lineageTag: 34097db4-7386-4368-b4eb-20cb28753079
+		summarizeBy: none
+		sourceColumn: Description
+
+	column Unit
+		dataType: string
+		lineageTag: 9d7ca622-3acd-40ad-878a-1f4c38644ea9
+		summarizeBy: none
+		sourceColumn: Unit
+
+	column ReferenceValue
+		dataType: double
+		formatString: #,0.000
+		lineageTag: 2adcc11d-45a3-4dd2-8eaa-f0f5dd62c1b6
+		summarizeBy: none
+		sourceColumn: ReferenceValue
+
+	column TagLabel
+		dataType: string
+		lineageTag: 7f493433-1e82-4c0d-8d77-1985f77e5f93
+		summarizeBy: none
+		sourceColumn: TagLabel
+		sortByColumn: SortOrder
+
+	/// Average baseline used as the reference on the EF and CL Combined Dashboard pages
+	column AvgReferenceValue
+		dataType: double
+		formatString: #,0.000
+		lineageTag: 9cc1eca0-26f8-4838-b83b-65b9e3ddc99d
+		summarizeBy: none
+		sourceColumn: AvgReferenceValue
+
+	partition DimTag = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ReferenceFilePath), [Delimiter = ",", Columns = 6, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {
+				        {"SortOrder", Int64.Type}, {"Tag", type text}, {"ShortName", type text},
+				        {"Description", type text}, {"Unit", type text}, {"ReferenceValue", type number}}, "en-US"),
+				    AvgRef = [#"C10A1_1_C101C_MTCHW_CH01_CL1.PV" = 7922.291541, #"C10A1_1_C101C_MTCHW_CH01_EF.PV" = 80.07187731, #"C10A1_1_C101C_MTCHW_CH01_EF.PV2" = 0.377649765, #"C10A1_1_C101C_MTCHW_CH01_FIT1.PV" = 1629.321017, #"C10A1_1_C101C_MTCHW_CH01_FIT2.PV" = 1229.448904, #"C10A1_1_C101C_MTCHW_CH01_TIT1.PV" = 29.387884, #"C10A1_1_C101C_MTCHW_CH01_TIT2.PV" = 33.98788722, #"C10A1_1_C101C_MTCHW_CH01_TIT3.PV" = 12.83812323, #"C10A1_1_C101C_MTCHW_CH01_TIT4.PV" = 18.38839669],
+				    AddAvg = Table.AddColumn(Typed, "AvgReferenceValue", each Record.FieldOrDefault(AvgRef, [Tag], null), type number),
+				    AddLabel = Table.AddColumn(AddAvg, "TagLabel", each
+				        [ShortName] & " - " & Text.Trim(Text.Replace([Description], "(CUP) Level 1 MT Chiller 1", "")) & " (" & [Unit] & ")", type text)
+				in
+				    AddLabel
+

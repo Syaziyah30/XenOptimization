@@ -1,0 +1,8 @@
+relationship 32f82233-d406-457c-8b53-bf42d2b51495
+	fromColumn: Data1min.Variable
+	toColumn: DimVariable.Variable
+
+relationship c4309ac4-2e57-4d6c-8e86-c96077cd9415
+	fromColumn: Data1min.Period
+	toColumn: DimPeriod.Period
+

@@ -1,0 +1,44 @@
+/// Row labels for the custom tooltip of the CL Combined Dashboard chart
+table 'CL Tooltip Rows'
+	isHidden
+	lineageTag: fd417245-0b21-4162-9436-0c9d388ba609
+
+	column Order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 352fe1fe-d08d-44a1-a56c-a7d091746e9c
+		summarizeBy: none
+		sourceColumn: Order
+
+	column Label
+		dataType: string
+		lineageTag: 14db0427-080c-4e23-b4cb-d31180296b2b
+		summarizeBy: none
+		sourceColumn: Label
+		sortByColumn: Order
+
+	column Short
+		dataType: string
+		isHidden
+		lineageTag: 90964bea-aa3c-4acd-bc7f-d1fc31b376b6
+		summarizeBy: none
+		sourceColumn: Short
+
+	column Kind
+		dataType: string
+		isHidden
+		lineageTag: 3ed8153f-d1b7-4252-ad21-193066385fd7
+		summarizeBy: none
+		sourceColumn: Kind
+
+	partition 'CL Tooltip Rows' = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [Order = Int64.Type, Label = text, Short = text, Kind = text], {{1, "CL1.PV (kW)", "CL1.PV", "value"}, {2, "CL1.PV reference (kW)", "CL1.PV", "ref"}, {3, "EF.PV2 (kW/RT)", "EF.PV2", "value"}, {4, "EF.PV2 reference", "EF.PV2", "ref"}, {5, "FIT1.PV (m³/h)", "FIT1.PV", "value"}, {6, "FIT1.PV reference", "FIT1.PV", "ref"}, {7, "FIT2.PV (m³/h)", "FIT2.PV", "value"}, {8, "FIT2.PV reference", "FIT2.PV", "ref"}, {9, "TIT1.PV (°C)", "TIT1.PV", "value"}, {10, "TIT1.PV reference", "TIT1.PV", "ref"}, {11, "TIT2.PV (°C)", "TIT2.PV", "value"}, {12, "TIT2.PV reference", "TIT2.PV", "ref"}, {13, "TIT3.PV (°C)", "TIT3.PV", "value"}, {14, "TIT3.PV reference", "TIT3.PV", "ref"}, {15, "TIT4.PV (°C)", "TIT4.PV", "value"}, {16, "TIT4.PV reference", "TIT4.PV", "ref"}, {17, "EF.PV (%)", "EF.PV", "value"}, {18, "EF.PV reference", "EF.PV", "ref"}})
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

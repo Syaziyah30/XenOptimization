@@ -1,0 +1,77 @@
+table Data1min
+	lineageTag: 28f7d6bf-f3a7-436a-9add-52ae12856338
+
+	/// Average of the 1-minute readings in the current filter (one variable, one period)
+	measure 'Period Average' = AVERAGE(Data1min[Value])
+		lineageTag: 5b93697e-dda9-4e89-84a5-af59024df63f
+
+		formatStringDefinition = SELECTEDVALUE(DimVariable[FormatString], "#,##0.00")
+
+	/// Average over all 5 periods (benchmark line)
+	measure 'Overall Average' = CALCULATE(AVERAGE(Data1min[Value]), REMOVEFILTERS(DimPeriod))
+		lineageTag: fe71bbda-df1b-4514-99bf-df8f60dc8b31
+
+		formatStringDefinition = SELECTEDVALUE(DimVariable[FormatString], "#,##0.00")
+
+	measure 'Y Axis Min' =
+			VAR lo = MINX(ALL(DimPeriod[Period]), [Period Average])
+			VAR hi = MAXX(ALL(DimPeriod[Period]), [Period Average])
+			RETURN lo - (hi - lo) * 0.35
+		lineageTag: 3680daa9-897f-4953-8047-4f49b72568e1
+
+	measure 'Y Axis Max' =
+			VAR lo = MINX(ALL(DimPeriod[Period]), [Period Average])
+			VAR hi = MAXX(ALL(DimPeriod[Period]), [Period Average])
+			RETURN hi + (hi - lo) * 0.35
+		lineageTag: 7a780d02-8d38-4f64-a188-612e4d45857c
+
+	/// Chart title for the variable ticked in the slicer
+	measure 'Selected Chart Title' = SELECTEDVALUE(DimVariable[ChartTitle], "Tick one variable on the left")
+		lineageTag: 27afc2fd-9852-4954-a494-43f6ead6a6ec
+
+	/// Period average minus overall average, as % of the overall average
+	measure 'Diff vs Overall %' = DIVIDE([Period Average] - [Overall Average], [Overall Average])
+		formatString: +0.00%;-0.00%;0.00%
+		lineageTag: b0707335-0b86-41b2-981e-e63b48cfcead
+
+	column Period
+		dataType: string
+		lineageTag: 43d955ec-d45a-4c8a-917e-d36cde27e31e
+		summarizeBy: none
+		sourceColumn: Period
+
+	column DateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 97a5d5f1-d316-44fc-ad25-d58e8fd3f393
+		summarizeBy: none
+		sourceColumn: DateTime
+
+	column Variable
+		dataType: string
+		lineageTag: dcad12cb-abe1-4b80-ab09-9de68907add0
+		summarizeBy: none
+		sourceColumn: Variable
+
+	column Value
+		dataType: double
+		lineageTag: 7e759a0e-0d36-4939-a2d7-83a9237ed249
+		summarizeBy: none
+		sourceColumn: Value
+
+	partition Data1min = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(SourceFilePath), null, true),
+				    Sheet = Source{[Item = "Data 1min", Kind = "Sheet"]}[Data],
+				    Promoted = Table.PromoteHeaders(Sheet, [PromoteAllScalars = true]),
+				    Unpivoted = Table.UnpivotOtherColumns(Promoted, {"Period", "DateTime"}, "Header", "Value"),
+				    WithVariable = Table.AddColumn(Unpivoted, "Variable", each Text.BeforeDelimiter([Header], " "), type text),
+				    Typed = Table.TransformColumnTypes(WithVariable, {{"Period", type text}, {"DateTime", type datetime}, {"Value", type number}}, "en-US"),
+				    Result = Table.SelectColumns(Typed, {"Period", "DateTime", "Variable", "Value"})
+				in
+				    Result
+
+	annotation PBI_ResultType = Table
+

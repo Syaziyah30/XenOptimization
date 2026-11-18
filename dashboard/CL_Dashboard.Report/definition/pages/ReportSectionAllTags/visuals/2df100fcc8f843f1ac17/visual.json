@@ -1,0 +1,49 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "2df100fcc8f843f1ac17",
+  "position": {
+    "x": 16.10062893081761,
+    "y": 8.050314465408805,
+    "z": 0,
+    "height": 62.206975414522582,
+    "width": 1247.7987421383648,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "MT Chiller 1 - All Variables, Hist_Value1 .. Hist_Value5",
+                    "textStyle": {
+                      "fontSize": "18pt",
+                      "fontWeight": "bold",
+                      "color": "#1F4E79"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Blue = actual value (1-min), red = reference value from client. Y-axis is shared across the 5 periods of each variable. Units: kW cooling load, % power loading, kW/RT efficiency, m³/h flow, °C temperature.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#605E5C"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,977 @@
+table Trend
+	lineageTag: 55becab9-da6b-4080-a3b5-80bc7befb518
+
+	measure 'Actual Value' = AVERAGE ( 'Trend'[Value] )
+		formatString: #,0.000
+		lineageTag: 5e0179d7-cc29-4edc-8037-42ff8e60d39b
+
+	measure 'Reference Value' = IF ( NOT ISEMPTY ( 'Trend' ), SELECTEDVALUE ( DimTag[ReferenceValue] ) )
+		formatString: #,0.000
+		lineageTag: 74752c2d-5b02-4b3d-b84c-fbc4361c3960
+
+	measure 'Average Value' = AVERAGE ( 'Trend'[Value] )
+		formatString: #,0.000
+		lineageTag: 3caeb776-24e4-46ba-85aa-71e999c09115
+
+	measure 'Min Value' = MIN ( 'Trend'[Value] )
+		formatString: #,0.000
+		lineageTag: b966d675-d758-4191-8ed0-5d21f4c98859
+
+	measure 'Max Value' = MAX ( 'Trend'[Value] )
+		formatString: #,0.000
+		lineageTag: 05a456d1-5fb6-43eb-86eb-4d8f0d942c65
+
+	measure 'Deviation from Reference %' = DIVIDE ( [Average Value] - [Reference Value], [Reference Value] )
+		formatString: 0.00%
+		lineageTag: 4633fbbd-0311-4282-83fa-c1a4c627eba7
+
+	measure '% Time Above Reference' =
+			VAR ref = SELECTEDVALUE ( DimTag[ReferenceValue] )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( ref ),
+			        DIVIDE ( CALCULATE ( COUNTROWS ( 'Trend' ), 'Trend'[Value] > ref ), COUNTROWS ( 'Trend' ) )
+			    )
+		formatString: 0.0%
+		lineageTag: 13613194-4e04-4098-bcc0-1c0c0910b270
+
+	measure 'Y Axis Min' =
+			VAR ref = SELECTEDVALUE ( DimTag[ReferenceValue] )
+			VAR lo = CALCULATE ( MIN ( 'Trend'[Value] ), REMOVEFILTERS ( DimPeriod ), REMOVEFILTERS ( 'Trend'[Period] ), REMOVEFILTERS ( 'Trend'[DateTime] ) )
+			VAR hi = CALCULATE ( MAX ( 'Trend'[Value] ), REMOVEFILTERS ( DimPeriod ), REMOVEFILTERS ( 'Trend'[Period] ), REMOVEFILTERS ( 'Trend'[DateTime] ) )
+			VAR mn = IF ( ISBLANK ( ref ), lo, MIN ( lo, ref ) )
+			VAR mx = IF ( ISBLANK ( ref ), hi, MAX ( hi, ref ) )
+			RETURN mn - ( mx - mn ) * 0.05
+		formatString: #,0.000
+		lineageTag: 82bcf883-41f5-422b-bbef-0f560895d897
+
+	measure 'Y Axis Max' =
+			VAR ref = SELECTEDVALUE ( DimTag[ReferenceValue] )
+			VAR lo = CALCULATE ( MIN ( 'Trend'[Value] ), REMOVEFILTERS ( DimPeriod ), REMOVEFILTERS ( 'Trend'[Period] ), REMOVEFILTERS ( 'Trend'[DateTime] ) )
+			VAR hi = CALCULATE ( MAX ( 'Trend'[Value] ), REMOVEFILTERS ( DimPeriod ), REMOVEFILTERS ( 'Trend'[Period] ), REMOVEFILTERS ( 'Trend'[DateTime] ) )
+			VAR mn = IF ( ISBLANK ( ref ), lo, MIN ( lo, ref ) )
+			VAR mx = IF ( ISBLANK ( ref ), hi, MAX ( hi, ref ) )
+			RETURN mx + ( mx - mn ) * 0.05
+		formatString: #,0.000
+		lineageTag: 319b3124-63e1-4355-9dfc-897b74a5a0a7
+
+	measure 'Period Title' = SELECTEDVALUE ( DimPeriod[PeriodTitle], "All periods" )
+		lineageTag: d99935e5-1c01-42b0-a7b6-0cdb76691de5
+
+	measure 'Unit Axis Title' = SELECTEDVALUE ( DimTag[ShortName] ) & " (" & SELECTEDVALUE ( DimTag[Unit] ) & ")"
+		lineageTag: 47d7c38c-42cf-45d5-b20e-e2226f8f7c28
+
+	measure 'Selected Tag Title' =
+			VAR lbl = SELECTEDVALUE ( DimTag[TagLabel], "Select a variable" )
+			VAR tag = SELECTEDVALUE ( DimTag[Tag] )
+			VAR ref = SELECTEDVALUE ( DimTag[ReferenceValue] )
+			VAR unit = SELECTEDVALUE ( DimTag[Unit] )
+			RETURN
+			    "Trend Graph - " & tag & "   (" & lbl & ")   Reference Value = " & FORMAT ( ref, "#,0.00##" ) & " " & unit
+		lineageTag: 1bfc9172-51d2-464d-95ac-df23ae9bcd49
+
+	measure 'CL1.PV (kW)' = CALCULATE ( AVERAGE ( 'Trend'[Value] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_CL1.PV" )
+		formatString: #,0.0
+		lineageTag: 3f1c2a6e-8b4d-4e7a-9c51-2d6f0a8b7e11
+
+	measure 'EF.PV2 (kW/RT)' = CALCULATE ( AVERAGE ( 'Trend'[Value] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_EF.PV2" )
+		formatString: #,0.0000
+		lineageTag: 7a2e9d40-1c5b-4f86-b3a7-9e0d4c6f2a22
+
+	measure 'Correlation CL1 vs EF.PV2' =
+			VAR pts =
+			    FILTER (
+			        ADDCOLUMNS (
+			            CALCULATETABLE ( VALUES ( 'Trend'[DateTime] ), REMOVEFILTERS ( DimTag ) ),
+			            "@x", [CL1.PV (kW)],
+			            "@y", [EF.PV2 (kW/RT)]
+			        ),
+			        NOT ISBLANK ( [@x] ) && NOT ISBLANK ( [@y] )
+			    )
+			VAR mx = AVERAGEX ( pts, [@x] )
+			VAR my = AVERAGEX ( pts, [@y] )
+			VAR cov = SUMX ( pts, ( [@x] - mx ) * ( [@y] - my ) )
+			VAR sx = SQRT ( SUMX ( pts, ( [@x] - mx ) ^ 2 ) )
+			VAR sy = SQRT ( SUMX ( pts, ( [@y] - my ) ^ 2 ) )
+			RETURN DIVIDE ( cov, sx * sy )
+		formatString: 0.00
+		lineageTag: c5d8e3b1-6f2a-4b9c-8e47-1a3b5d7f9c33
+
+	measure 'CL1.PV Reference (kW)' =
+			IF (
+			    NOT ISBLANK ( [CL1.PV (kW)] ),
+			    CALCULATE ( MAX ( DimTag[ReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_CL1.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 5a1c7e3d-2b8f-4d69-9e04-7f3b1d5c8a77
+
+	measure 'EF.PV2 Reference (kW/RT)' =
+			IF (
+			    NOT ISBLANK ( [EF.PV2 (kW/RT)] ),
+			    CALCULATE ( MAX ( DimTag[ReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_EF.PV2" )
+			)
+		formatString: #,0.0000
+		lineageTag: 9c4e2a6f-8d1b-4f37-a5e9-3b7d1f6c2e88
+
+	/// Reference value at the last 30-minute block only, so its data label sits beside the right axis
+	measure 'EF.PV2 Reference label' =
+			VAR lastT = CALCULATE ( MAX ( 'Trend'[DateTime 30min] ), ALLSELECTED ( 'Trend'[DateTime 30min] ) )
+			RETURN
+			    IF ( MAX ( 'Trend'[DateTime 30min] ) = lastT, [EF.PV2 Reference (kW/RT)] )
+		formatString: 0.0000
+		lineageTag: 1e6b8d3a-4c7f-4a92-b5d1-8f2c6e9a3d99
+
+	/// Reference value at the first 30-minute block only, so its data label sits beside the left axis
+	measure 'CL1.PV Reference label' =
+			VAR firstT = CALCULATE ( MIN ( 'Trend'[DateTime 30min] ), ALLSELECTED ( 'Trend'[DateTime 30min] ) )
+			RETURN
+			    IF ( MIN ( 'Trend'[DateTime 30min] ) = firstT, [CL1.PV Reference (kW)] )
+		formatString: #,0.0
+		lineageTag: 6f2a9c4e-1d7b-4e83-a6c5-2b8d4f1e7a10
+
+	measure 'TIT1.PV (°C)' = CALCULATE ( AVERAGE ( 'Trend'[Value] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT1.PV" )
+		formatString: #,0.00
+		lineageTag: 0b3d7e5a-9c2f-4a18-b6e4-7d1a3c5f9b21
+
+	measure 'TIT1.PV Reference (°C)' =
+			IF (
+			    NOT ISBLANK ( [TIT1.PV (°C)] ),
+			    CALCULATE ( MAX ( DimTag[ReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT1.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 4c8e1a6b-2d9f-4b37-a1c5-8e3b6d2f4c32
+
+	/// Reference value at the first 30-minute block only, so its data label sits beside the left axis
+	measure 'TIT1.PV Reference label' =
+			VAR firstT = CALCULATE ( MIN ( 'Trend'[DateTime 30min] ), ALLSELECTED ( 'Trend'[DateTime 30min] ) )
+			RETURN
+			    IF ( MIN ( 'Trend'[DateTime 30min] ) = firstT, [TIT1.PV Reference (°C)] )
+		formatString: #,0.00
+		lineageTag: 9d5f2b7c-3e1a-4c46-b2d6-1f4c7e3a5d43
+
+	measure 'FIT1.PV (m³/h)' = CALCULATE ( AVERAGE ( 'Trend'[Value] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_FIT1.PV" )
+		formatString: #,0.0
+		lineageTag: 241c0db7-8929-4776-858d-fd390c369103
+
+	measure 'FIT1.PV Reference (m³/h)' =
+			IF (
+			    NOT ISBLANK ( [FIT1.PV (m³/h)] ),
+			    CALCULATE ( MAX ( DimTag[ReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_FIT1.PV" )
+			)
+		formatString: #,0.0
+		lineageTag: 3ff45d83-1e9e-415b-8a88-098043b47224
+
+	/// Reference value at the first 30-minute block only, so its data label sits beside the left axis
+	measure 'FIT1.PV Reference label' =
+			VAR firstT = CALCULATE ( MIN ( 'Trend'[DateTime 30min] ), ALLSELECTED ( 'Trend'[DateTime 30min] ) )
+			RETURN
+			    IF ( MIN ( 'Trend'[DateTime 30min] ) = firstT, [FIT1.PV Reference (m³/h)] )
+		formatString: #,0.0
+		lineageTag: 5bd786a1-688f-456f-8b98-de7515d0cdf4
+
+	measure 'FIT2.PV (m³/h)' = CALCULATE ( AVERAGE ( 'Trend'[Value] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_FIT2.PV" )
+		formatString: #,0.0
+		lineageTag: 1d4c7c11-45ad-4671-aeb3-8364c187ecf1
+
+	measure 'FIT2.PV Reference (m³/h)' =
+			IF (
+			    NOT ISBLANK ( [FIT2.PV (m³/h)] ),
+			    CALCULATE ( MAX ( DimTag[ReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_FIT2.PV" )
+			)
+		formatString: #,0.0
+		lineageTag: d1b0a8f3-e4bc-4b5a-9d8c-0bf25410cf39
+
+	/// Reference value at the first 30-minute block only, so its data label sits beside the left axis
+	measure 'FIT2.PV Reference label' =
+			VAR firstT = CALCULATE ( MIN ( 'Trend'[DateTime 30min] ), ALLSELECTED ( 'Trend'[DateTime 30min] ) )
+			RETURN
+			    IF ( MIN ( 'Trend'[DateTime 30min] ) = firstT, [FIT2.PV Reference (m³/h)] )
+		formatString: #,0.0
+		lineageTag: 29a6321f-d196-4cd3-ac53-337f73900b04
+
+	measure 'TIT2.PV (°C)' = CALCULATE ( AVERAGE ( 'Trend'[Value] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT2.PV" )
+		formatString: #,0.00
+		lineageTag: 33c2eb1f-7c8c-4813-ad23-0315a6bcc456
+
+	measure 'TIT2.PV Reference (°C)' =
+			IF (
+			    NOT ISBLANK ( [TIT2.PV (°C)] ),
+			    CALCULATE ( MAX ( DimTag[ReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT2.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 33be2a75-a8e6-4208-89e9-295d192dfb89
+
+	/// Reference value at the first 30-minute block only, so its data label sits beside the left axis
+	measure 'TIT2.PV Reference label' =
+			VAR firstT = CALCULATE ( MIN ( 'Trend'[DateTime 30min] ), ALLSELECTED ( 'Trend'[DateTime 30min] ) )
+			RETURN
+			    IF ( MIN ( 'Trend'[DateTime 30min] ) = firstT, [TIT2.PV Reference (°C)] )
+		formatString: #,0.00
+		lineageTag: 70c57438-3b20-41c9-b9a8-7090f3935498
+
+	measure 'TIT3.PV (°C)' = CALCULATE ( AVERAGE ( 'Trend'[Value] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT3.PV" )
+		formatString: #,0.00
+		lineageTag: e3dabe0d-1f11-4935-9a04-8747301fb85c
+
+	measure 'TIT3.PV Reference (°C)' =
+			IF (
+			    NOT ISBLANK ( [TIT3.PV (°C)] ),
+			    CALCULATE ( MAX ( DimTag[ReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT3.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 4628a989-aeb7-4e7c-bf06-13206f74afb5
+
+	/// Reference value at the first 30-minute block only, so its data label sits beside the left axis
+	measure 'TIT3.PV Reference label' =
+			VAR firstT = CALCULATE ( MIN ( 'Trend'[DateTime 30min] ), ALLSELECTED ( 'Trend'[DateTime 30min] ) )
+			RETURN
+			    IF ( MIN ( 'Trend'[DateTime 30min] ) = firstT, [TIT3.PV Reference (°C)] )
+		formatString: #,0.00
+		lineageTag: 75ede9c8-1d8f-4a7f-bdcb-d048153c6682
+
+	measure 'TIT4.PV (°C)' = CALCULATE ( AVERAGE ( 'Trend'[Value] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT4.PV" )
+		formatString: #,0.00
+		lineageTag: 8c3e3148-de36-4dab-858a-bb2844507d40
+
+	measure 'TIT4.PV Reference (°C)' =
+			IF (
+			    NOT ISBLANK ( [TIT4.PV (°C)] ),
+			    CALCULATE ( MAX ( DimTag[ReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT4.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 06d7e25e-de9d-446c-adf8-171b3e71f0f6
+
+	/// Reference value at the first 30-minute block only, so its data label sits beside the left axis
+	measure 'TIT4.PV Reference label' =
+			VAR firstT = CALCULATE ( MIN ( 'Trend'[DateTime 30min] ), ALLSELECTED ( 'Trend'[DateTime 30min] ) )
+			RETURN
+			    IF ( MIN ( 'Trend'[DateTime 30min] ) = firstT, [TIT4.PV Reference (°C)] )
+		formatString: #,0.00
+		lineageTag: f916406e-1fb5-41c6-b25e-d1235b0ed068
+
+	/// Actual value of the variable ticked on the Combined page (blank when none is ticked)
+	measure 'Combined Variable Value' =
+			VAR tag = SELECTEDVALUE ( 'Combined Variables'[Tag] )
+			RETURN
+			    IF ( NOT ISBLANK ( tag ), CALCULATE ( AVERAGE ( 'Trend'[Value] ), DimTag[Tag] = tag ) )
+		formatString: #,0.00
+		lineageTag: f5ba777d-06d5-4a9d-8a4a-c29983fb66f5
+
+	measure 'Combined Variable Reference' =
+			VAR tag = SELECTEDVALUE ( 'Combined Variables'[Tag] )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( [Combined Variable Value] ),
+			        CALCULATE ( MAX ( DimTag[ReferenceValue] ), DimTag[Tag] = tag )
+			    )
+		formatString: #,0.00
+		lineageTag: b1a27c1c-5aae-4cc0-bdbc-29050c4570f3
+
+	/// Reference value at the last 30-minute block only, so its data label sits beside the right axis
+	measure 'Combined Variable Reference label' =
+			VAR lastT = CALCULATE ( MAX ( 'Trend'[DateTime 30min] ), ALLSELECTED ( 'Trend'[DateTime 30min] ) )
+			RETURN
+			    IF ( MAX ( 'Trend'[DateTime 30min] ) = lastT, [Combined Variable Reference] )
+		formatString: #,0.00
+		lineageTag: 62eaeb83-b01f-4ec0-9d15-aecadae6f25f
+
+	/// Reference value at the first 30-minute block only, so its data label sits beside the left axis
+	measure 'Combined EF Reference label' =
+			VAR firstT = CALCULATE ( MIN ( 'Trend'[DateTime 30min] ), ALLSELECTED ( 'Trend'[DateTime 30min] ) )
+			RETURN
+			    IF ( MIN ( 'Trend'[DateTime 30min] ) = firstT, [EF.PV2 Reference (kW/RT)] )
+		formatString: 0.0000
+		lineageTag: 6b35574d-ae49-4d35-acd6-cfe0143df4f3
+
+	measure 'Combined Y2 Axis Title' =
+			VAR short = SELECTEDVALUE ( 'Combined Variables'[Short] )
+			RETURN
+			    IF ( ISBLANK ( short ), "Select a variable", short & " (" & SELECTEDVALUE ( 'Combined Variables'[Unit] ) & ")" )
+		lineageTag: c36f7175-7262-4c43-9dec-57c8eee44558
+
+	/// Page heading with the month of the selected period, e.g. "... Dashboard (Feb 2024)"
+	measure 'Combined Page Title' =
+			VAR s = MIN ( DimPeriod[StartDateTime] )
+			VAR e = MAX ( DimPeriod[EndDateTime] )
+			VAR span =
+			    IF (
+			        FORMAT ( s, "mmm yyyy" ) = FORMAT ( e, "mmm yyyy" ),
+			        FORMAT ( s, "mmm yyyy" ),
+			        FORMAT ( s, "mmm yyyy" ) & " - " & FORMAT ( e, "mmm yyyy" )
+			    )
+			RETURN "MT Chiller 1 - Efficiency (EF.PV2) Combined Trend Dashboard (" & span & ")"
+		lineageTag: 8b1f4c62-7e3a-4d95-b0c8-2a6e9f1d3b47
+
+	measure 'Combined Chart Title' =
+			VAR names =
+			    CONCATENATEX (
+			        VALUES ( 'Combined Variables'[Variable] ),
+			        CALCULATE ( SELECTEDVALUE ( 'Combined Variables'[Short] ) ),
+			        ", ",
+			        CALCULATE ( MIN ( 'Combined Variables'[Order] ) ), ASC
+			    )
+			RETURN
+			    IF (
+			        NOT ISFILTERED ( 'Combined Variables'[Variable] ),
+			        "Efficiency EF.PV2 (kW/RT)  -  tick one or more variables on the left to compare",
+			        "Combined Trend of " & names & " and Efficiency (EF.PV2)"
+			    ) & "   |   " & [Period Title]
+		lineageTag: da43a104-7771-4b81-b4b4-dce125c1280b
+
+	/// Pearson correlation of the ticked variable with EF.PV2 over the 30-minute blocks in context
+	measure 'Scatter Pearson r' =
+			VAR pts =
+			    FILTER (
+			        ADDCOLUMNS (
+			            CALCULATETABLE ( VALUES ( 'Trend'[DateTime 30min] ), REMOVEFILTERS ( DimTag ) ),
+			            "@x", [Combined Variable Value],
+			            "@y", [EF.PV2 (kW/RT)]
+			        ),
+			        NOT ISBLANK ( [@x] ) && NOT ISBLANK ( [@y] )
+			    )
+			VAR mx = AVERAGEX ( pts, [@x] )
+			VAR my = AVERAGEX ( pts, [@y] )
+			VAR cov = SUMX ( pts, ( [@x] - mx ) * ( [@y] - my ) )
+			VAR vx = SUMX ( pts, ( [@x] - mx ) ^ 2 )
+			VAR vy = SUMX ( pts, ( [@y] - my ) ^ 2 )
+			RETURN DIVIDE ( cov, SQRT ( vx ) * SQRT ( vy ) )
+		formatString: 0.0000
+		lineageTag: e7afc4cd-95ec-4f69-9417-a28a18c599b5
+
+	/// Least-squares slope: change in EF.PV2 (kW/RT) per 1 unit of the ticked variable
+	measure 'Scatter Slope' =
+			VAR pts =
+			    FILTER (
+			        ADDCOLUMNS (
+			            CALCULATETABLE ( VALUES ( 'Trend'[DateTime 30min] ), REMOVEFILTERS ( DimTag ) ),
+			            "@x", [Combined Variable Value],
+			            "@y", [EF.PV2 (kW/RT)]
+			        ),
+			        NOT ISBLANK ( [@x] ) && NOT ISBLANK ( [@y] )
+			    )
+			VAR mx = AVERAGEX ( pts, [@x] )
+			VAR my = AVERAGEX ( pts, [@y] )
+			VAR cov = SUMX ( pts, ( [@x] - mx ) * ( [@y] - my ) )
+			VAR vx = SUMX ( pts, ( [@x] - mx ) ^ 2 )
+			VAR vy = SUMX ( pts, ( [@y] - my ) ^ 2 )
+			RETURN DIVIDE ( cov, vx )
+		formatString: 0.000000
+		lineageTag: 0e79f25c-fe6f-45a7-81fe-afc5a59b5b02
+
+	measure 'Scatter Points' =
+			VAR pts =
+			    FILTER (
+			        ADDCOLUMNS (
+			            CALCULATETABLE ( VALUES ( 'Trend'[DateTime 30min] ), REMOVEFILTERS ( DimTag ) ),
+			            "@x", [Combined Variable Value],
+			            "@y", [EF.PV2 (kW/RT)]
+			        ),
+			        NOT ISBLANK ( [@x] ) && NOT ISBLANK ( [@y] )
+			    )
+			VAR mx = AVERAGEX ( pts, [@x] )
+			VAR my = AVERAGEX ( pts, [@y] )
+			VAR cov = SUMX ( pts, ( [@x] - mx ) * ( [@y] - my ) )
+			VAR vx = SUMX ( pts, ( [@x] - mx ) ^ 2 )
+			VAR vy = SUMX ( pts, ( [@y] - my ) ^ 2 )
+			RETURN COUNTROWS ( pts )
+		formatString: #,0
+		lineageTag: 2af4c4cb-baa2-47c8-ac0b-62fce3f0548e
+
+	measure 'Scatter Strength' =
+			VAR r = [Scatter Pearson r]
+			VAR a = ABS ( r )
+			RETURN
+			    IF (
+			        ISBLANK ( r ), "Select a variable",
+			        IF (
+			            a < 0.2, "Very weak / no link",
+			            SWITCH ( TRUE (), a >= 0.8, "Very strong", a >= 0.6, "Strong", a >= 0.4, "Moderate", "Weak" )
+			                & IF ( r > 0, " positive", " negative" )
+			        )
+			    )
+		lineageTag: cd65871a-08a1-4e5d-aa87-39448e761c84
+
+	/// EF.PV2 change for each +1 (or +100 for kW and m³/h) of the ticked variable
+	measure 'Scatter Effect text' =
+			VAR unit = SELECTEDVALUE ( 'Combined Variables'[Unit] )
+			VAR step = IF ( unit IN { "kW", "m³/h" }, 100, 1 )
+			VAR dEF = [Scatter Slope] * step
+			VAR pct = DIVIDE ( dEF, CALCULATE ( [EF.PV2 (kW/RT)] ) )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( dEF ),
+			        FORMAT ( dEF, "+0.0000;-0.0000" ) & " kW/RT (" & FORMAT ( pct, "+0.0%;-0.0%" ) & ") per +" & step & " " & unit
+			    )
+		lineageTag: 01aa0df4-fdc3-4dce-9f85-59c688177aa5
+
+	measure 'Scatter Chart Title' =
+			VAR short = SELECTEDVALUE ( 'Combined Variables'[Short] )
+			RETURN
+			    IF (
+			        ISBLANK ( short ),
+			        "Tick a variable on the left",
+			        "EF.PV2 vs " & short & "   |   Pearson r = " & FORMAT ( [Scatter Pearson r], "0.0000" ) & " (" & [Scatter Strength] & ")"
+			    ) & "   |   " & [Period Title]
+		lineageTag: f51202ab-1416-4e0d-8ef6-a0c523e55bf2
+
+	measure 'Scatter Page Title' =
+			VAR s = MIN ( DimPeriod[StartDateTime] )
+			VAR e = MAX ( DimPeriod[EndDateTime] )
+			VAR span =
+			    IF (
+			        FORMAT ( s, "mmm yyyy" ) = FORMAT ( e, "mmm yyyy" ),
+			        FORMAT ( s, "mmm yyyy" ),
+			        FORMAT ( s, "mmm yyyy" ) & " - " & FORMAT ( e, "mmm yyyy" )
+			    )
+			RETURN "MT Chiller 1 - Pearson Correlation: EF.PV2 vs Variable (" & span & ")"
+		lineageTag: 447d6cb3-e88a-4201-9ede-ef133014165b
+
+	/// CL1.PV on the Combined page, blank unless it is ticked in the variable list
+	measure 'Cmb CL1.PV' =
+			IF (
+			    ISFILTERED ( 'Combined Variables'[Variable] ) && "CL1.PV" IN VALUES ( 'Combined Variables'[Short] ),
+			    [CL1.PV (kW)]
+			)
+		formatString: #,0.00
+		lineageTag: 5616659c-6b53-4802-a92e-1b8b5b627ba4
+
+	measure 'Cmb CL1.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [Cmb CL1.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_CL1.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 7230f7d1-b225-4392-aa43-2148ec6428ff
+
+	/// FIT1.PV on the Combined page, blank unless it is ticked in the variable list
+	measure 'Cmb FIT1.PV' =
+			IF (
+			    ISFILTERED ( 'Combined Variables'[Variable] ) && "FIT1.PV" IN VALUES ( 'Combined Variables'[Short] ),
+			    [FIT1.PV (m³/h)]
+			)
+		formatString: #,0.00
+		lineageTag: 4f316015-f208-4502-b981-4eb2c2f4a679
+
+	measure 'Cmb FIT1.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [Cmb FIT1.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_FIT1.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 19385a5b-a174-4f6e-b5ff-decafab55ce5
+
+	/// FIT2.PV on the Combined page, blank unless it is ticked in the variable list
+	measure 'Cmb FIT2.PV' =
+			IF (
+			    ISFILTERED ( 'Combined Variables'[Variable] ) && "FIT2.PV" IN VALUES ( 'Combined Variables'[Short] ),
+			    [FIT2.PV (m³/h)]
+			)
+		formatString: #,0.00
+		lineageTag: 7ab8aad8-5465-4a00-a5b1-2e0b51f1bf74
+
+	measure 'Cmb FIT2.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [Cmb FIT2.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_FIT2.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 8b935ea8-5c81-42a5-93f7-83a19f68a09c
+
+	/// TIT1.PV on the Combined page, blank unless it is ticked in the variable list
+	measure 'Cmb TIT1.PV' =
+			IF (
+			    ISFILTERED ( 'Combined Variables'[Variable] ) && "TIT1.PV" IN VALUES ( 'Combined Variables'[Short] ),
+			    [TIT1.PV (°C)]
+			)
+		formatString: #,0.00
+		lineageTag: dc454614-4d9d-4f82-88f5-3bd08e342b18
+
+	measure 'Cmb TIT1.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [Cmb TIT1.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT1.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 77e8bb92-1ec6-4d3e-8a60-18401f58a1ce
+
+	/// TIT2.PV on the Combined page, blank unless it is ticked in the variable list
+	measure 'Cmb TIT2.PV' =
+			IF (
+			    ISFILTERED ( 'Combined Variables'[Variable] ) && "TIT2.PV" IN VALUES ( 'Combined Variables'[Short] ),
+			    [TIT2.PV (°C)]
+			)
+		formatString: #,0.00
+		lineageTag: bbbcaee3-45fb-4400-8cde-e2f66570f354
+
+	measure 'Cmb TIT2.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [Cmb TIT2.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT2.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 34133c18-f468-41cd-85ce-a4222c2625a0
+
+	/// TIT3.PV on the Combined page, blank unless it is ticked in the variable list
+	measure 'Cmb TIT3.PV' =
+			IF (
+			    ISFILTERED ( 'Combined Variables'[Variable] ) && "TIT3.PV" IN VALUES ( 'Combined Variables'[Short] ),
+			    [TIT3.PV (°C)]
+			)
+		formatString: #,0.00
+		lineageTag: 7a7aba2b-6658-46b3-b74f-03026460b2ca
+
+	measure 'Cmb TIT3.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [Cmb TIT3.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT3.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: f38492b9-17d6-41ac-bb26-9e9c01f471b0
+
+	/// TIT4.PV on the Combined page, blank unless it is ticked in the variable list
+	measure 'Cmb TIT4.PV' =
+			IF (
+			    ISFILTERED ( 'Combined Variables'[Variable] ) && "TIT4.PV" IN VALUES ( 'Combined Variables'[Short] ),
+			    [TIT4.PV (°C)]
+			)
+		formatString: #,0.00
+		lineageTag: dee51f42-2127-43c3-b00c-bfbfafe30838
+
+	measure 'Cmb TIT4.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [Cmb TIT4.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT4.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 599188a0-8e67-49a3-a560-03c921efe513
+
+	/// EF.PV on the Combined page, blank unless it is ticked in the variable list
+	measure 'Cmb EF.PV' =
+			IF (
+			    ISFILTERED ( 'Combined Variables'[Variable] ) && "EF.PV" IN VALUES ( 'Combined Variables'[Short] ),
+			    CALCULATE ( AVERAGE ( 'Trend'[Value] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_EF.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 917680ce-bb64-41e5-b3dd-9eddbb9432ee
+
+	measure 'Cmb EF.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [Cmb EF.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_EF.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: a6403174-6b56-4031-8d59-597695ca02a2
+
+	/// Right-axis title listing every ticked variable, e.g. "TIT1.PV (°C), TIT2.PV (°C)"
+	measure 'Combined Y2 Axis Title Multi' =
+			IF (
+			    ISFILTERED ( 'Combined Variables'[Variable] ),
+			    CONCATENATEX (
+			        VALUES ( 'Combined Variables'[Variable] ),
+			        CALCULATE ( SELECTEDVALUE ( 'Combined Variables'[Short] ) & " (" & SELECTEDVALUE ( 'Combined Variables'[Unit] ) & ")" ),
+			        ", ",
+			        CALCULATE ( MIN ( 'Combined Variables'[Order] ) ), ASC
+			    ),
+			    "Select variables"
+			)
+		lineageTag: 16c03122-e411-43de-b794-fed0dae9fa51
+
+	/// EF.PV2 on the CL Combined page, blank unless it is ticked in the variable list
+	measure 'CLc EF.PV2' =
+			IF (
+			    ISFILTERED ( 'CL Combined Variables'[Variable] ) && "EF.PV2" IN VALUES ( 'CL Combined Variables'[Short] ),
+			    [EF.PV2 (kW/RT)]
+			)
+		formatString: 0.0000
+		lineageTag: 80ce08eb-f752-43a1-bf4f-93d359a3442c
+
+	measure 'CLc EF.PV2 Reference' =
+			IF (
+			    NOT ISBLANK ( [CLc EF.PV2] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_EF.PV2" )
+			)
+		formatString: 0.0000
+		lineageTag: 64c14baf-3b4f-4a3e-924f-66976db17f5a
+
+	/// FIT1.PV on the CL Combined page, blank unless it is ticked in the variable list
+	measure 'CLc FIT1.PV' =
+			IF (
+			    ISFILTERED ( 'CL Combined Variables'[Variable] ) && "FIT1.PV" IN VALUES ( 'CL Combined Variables'[Short] ),
+			    [FIT1.PV (m³/h)]
+			)
+		formatString: #,0.00
+		lineageTag: 16f803c6-daa8-4feb-ba2a-8525bedf38be
+
+	measure 'CLc FIT1.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [CLc FIT1.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_FIT1.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: ebaf618f-6f44-43e6-94aa-76eaf87ca051
+
+	/// FIT2.PV on the CL Combined page, blank unless it is ticked in the variable list
+	measure 'CLc FIT2.PV' =
+			IF (
+			    ISFILTERED ( 'CL Combined Variables'[Variable] ) && "FIT2.PV" IN VALUES ( 'CL Combined Variables'[Short] ),
+			    [FIT2.PV (m³/h)]
+			)
+		formatString: #,0.00
+		lineageTag: 544204c7-f4f3-4348-a515-1b7d8d016235
+
+	measure 'CLc FIT2.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [CLc FIT2.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_FIT2.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 362fe3b5-e67e-4e46-afe7-461adc4d6a6b
+
+	/// TIT1.PV on the CL Combined page, blank unless it is ticked in the variable list
+	measure 'CLc TIT1.PV' =
+			IF (
+			    ISFILTERED ( 'CL Combined Variables'[Variable] ) && "TIT1.PV" IN VALUES ( 'CL Combined Variables'[Short] ),
+			    [TIT1.PV (°C)]
+			)
+		formatString: #,0.00
+		lineageTag: 53bd0212-02d0-4e16-ae80-48cdfd25c0b7
+
+	measure 'CLc TIT1.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [CLc TIT1.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT1.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 9a5b9c14-f6fe-4e96-b001-eee3e89a7170
+
+	/// TIT2.PV on the CL Combined page, blank unless it is ticked in the variable list
+	measure 'CLc TIT2.PV' =
+			IF (
+			    ISFILTERED ( 'CL Combined Variables'[Variable] ) && "TIT2.PV" IN VALUES ( 'CL Combined Variables'[Short] ),
+			    [TIT2.PV (°C)]
+			)
+		formatString: #,0.00
+		lineageTag: 062ed5b2-2732-4426-be29-0e73625cbbd4
+
+	measure 'CLc TIT2.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [CLc TIT2.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT2.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: c2f1134d-5d1c-41f2-b1f3-32f7acb0aa20
+
+	/// TIT3.PV on the CL Combined page, blank unless it is ticked in the variable list
+	measure 'CLc TIT3.PV' =
+			IF (
+			    ISFILTERED ( 'CL Combined Variables'[Variable] ) && "TIT3.PV" IN VALUES ( 'CL Combined Variables'[Short] ),
+			    [TIT3.PV (°C)]
+			)
+		formatString: #,0.00
+		lineageTag: ef8ff2a3-6a17-4e34-82c5-28f8179ba4da
+
+	measure 'CLc TIT3.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [CLc TIT3.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT3.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 4bdb9949-5b60-4b2a-a726-dde1ca1c80ed
+
+	/// TIT4.PV on the CL Combined page, blank unless it is ticked in the variable list
+	measure 'CLc TIT4.PV' =
+			IF (
+			    ISFILTERED ( 'CL Combined Variables'[Variable] ) && "TIT4.PV" IN VALUES ( 'CL Combined Variables'[Short] ),
+			    [TIT4.PV (°C)]
+			)
+		formatString: #,0.00
+		lineageTag: 6140bae3-10a4-4c5e-b339-8da80ace553a
+
+	measure 'CLc TIT4.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [CLc TIT4.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_TIT4.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: df2b113f-cf62-41cd-a716-5d8c21e816f1
+
+	/// EF.PV on the CL Combined page, blank unless it is ticked in the variable list
+	measure 'CLc EF.PV' =
+			IF (
+			    ISFILTERED ( 'CL Combined Variables'[Variable] ) && "EF.PV" IN VALUES ( 'CL Combined Variables'[Short] ),
+			    CALCULATE ( AVERAGE ( 'Trend'[Value] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_EF.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: 990d3d03-6ce9-4bab-8371-44cdd2de3fbd
+
+	measure 'CLc EF.PV Reference' =
+			IF (
+			    NOT ISBLANK ( [CLc EF.PV] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_EF.PV" )
+			)
+		formatString: #,0.00
+		lineageTag: daa4782b-141f-49df-b81f-0ccb360e9749
+
+	/// Right-axis title listing every ticked variable, e.g. "EF.PV2 (kW/RT), TIT1.PV (°C)"
+	measure 'CL Combined Y2 Axis Title' =
+			IF (
+			    ISFILTERED ( 'CL Combined Variables'[Variable] ),
+			    CONCATENATEX (
+			        VALUES ( 'CL Combined Variables'[Variable] ),
+			        CALCULATE ( SELECTEDVALUE ( 'CL Combined Variables'[Short] ) & " (" & SELECTEDVALUE ( 'CL Combined Variables'[Unit] ) & ")" ),
+			        ", ",
+			        CALCULATE ( MIN ( 'CL Combined Variables'[Order] ) ), ASC
+			    ),
+			    "Select variables"
+			)
+		lineageTag: 1ea20164-51dd-4007-9567-0fbe8e144d96
+
+	measure 'CL Combined Chart Title' =
+			VAR names =
+			    CONCATENATEX (
+			        VALUES ( 'CL Combined Variables'[Variable] ),
+			        CALCULATE ( SELECTEDVALUE ( 'CL Combined Variables'[Short] ) ),
+			        ", ",
+			        CALCULATE ( MIN ( 'CL Combined Variables'[Order] ) ), ASC
+			    )
+			RETURN
+			    IF (
+			        NOT ISFILTERED ( 'CL Combined Variables'[Variable] ),
+			        "Cooling Load CL1.PV (kW)  -  tick one or more variables on the left to compare",
+			        "Combined Trend of " & names & " and Cooling Load (CL1.PV)"
+			    ) & "   |   " & [Period Title]
+		lineageTag: cbd03e05-f11b-4d9f-bcaf-f6eb4dbdb2ff
+
+	/// Page heading with the month of the selected period, e.g. "... Dashboard (Feb 2024)"
+	measure 'CL Combined Page Title' =
+			VAR s = MIN ( DimPeriod[StartDateTime] )
+			VAR e = MAX ( DimPeriod[EndDateTime] )
+			VAR span =
+			    IF (
+			        FORMAT ( s, "mmm yyyy" ) = FORMAT ( e, "mmm yyyy" ),
+			        FORMAT ( s, "mmm yyyy" ),
+			        FORMAT ( s, "mmm yyyy" ) & " - " & FORMAT ( e, "mmm yyyy" )
+			    )
+			RETURN "MT Chiller 1 - Cooling Load (CL1.PV) Combined Trend Dashboard (" & span & ")"
+		lineageTag: c3cd89d3-1e95-4f4a-a1da-5c15a90cc3b6
+
+	/// Average baseline reference (EF and CL Combined Dashboard pages)
+	measure 'Avg Reference Value' = IF ( NOT ISEMPTY ( 'Trend' ), SELECTEDVALUE ( DimTag[AvgReferenceValue] ) )
+		formatString: #,0.000
+		lineageTag: d96872b8-a2d7-4ea9-8507-bf67e731f962
+
+	measure 'Deviation from Avg Reference %' = DIVIDE ( [Average Value] - [Avg Reference Value], [Avg Reference Value] )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 5b886567-36fc-40e1-bcef-d1e7c58187b0
+
+	measure 'EF.PV2 Avg Reference (kW/RT)' =
+			IF (
+			    NOT ISBLANK ( [EF.PV2 (kW/RT)] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_EF.PV2" )
+			)
+		formatString: 0.0000
+		lineageTag: 49dbd1e7-611a-4487-a845-c0eaeb5fb83c
+
+	/// Average reference at the first 30-minute block only, so its data label sits beside the left axis
+	measure 'EF.PV2 Avg Reference label' =
+			VAR firstT = CALCULATE ( MIN ( 'Trend'[DateTime 30min] ), ALLSELECTED ( 'Trend'[DateTime 30min] ) )
+			RETURN
+			    IF ( MIN ( 'Trend'[DateTime 30min] ) = firstT, [EF.PV2 Avg Reference (kW/RT)] )
+		formatString: 0.0000
+		lineageTag: 9d57f2a0-d531-4315-ad9a-2a931cd1fc06
+
+	measure 'CL1.PV Avg Reference (kW)' =
+			IF (
+			    NOT ISBLANK ( [CL1.PV (kW)] ),
+			    CALCULATE ( MAX ( DimTag[AvgReferenceValue] ), DimTag[Tag] = "C10A1_1_C101C_MTCHW_CH01_CL1.PV" )
+			)
+		formatString: #,0.0
+		lineageTag: 8136ef4d-b945-4e24-aef9-0d789c46b27f
+
+	/// Average reference at the first 30-minute block only, so its data label sits beside the left axis
+	measure 'CL1.PV Avg Reference label' =
+			VAR firstT = CALCULATE ( MIN ( 'Trend'[DateTime 30min] ), ALLSELECTED ( 'Trend'[DateTime 30min] ) )
+			RETURN
+			    IF ( MIN ( 'Trend'[DateTime 30min] ) = firstT, [CL1.PV Avg Reference (kW)] )
+		formatString: #,0.0
+		lineageTag: 10c1566e-06c5-4e50-911d-d10375f52c10
+
+	/// Value of the variable ticked on the CL Correlation Scatter page (x axis)
+	measure 'CL Scatter X Value' =
+			VAR tag = SELECTEDVALUE ( 'CL Combined Variables'[Tag] )
+			RETURN
+			    IF ( NOT ISBLANK ( tag ), CALCULATE ( AVERAGE ( 'Trend'[Value] ), DimTag[Tag] = tag ) )
+		formatString: #,0.0000
+		lineageTag: 3faba75c-1aea-4c68-a002-d172ad2e0ac6
+
+	measure 'CL Scatter X Axis Title' =
+			VAR short = SELECTEDVALUE ( 'CL Combined Variables'[Short] )
+			RETURN
+			    IF ( ISBLANK ( short ), "Select a variable", short & " (" & SELECTEDVALUE ( 'CL Combined Variables'[Unit] ) & ")" )
+		lineageTag: 25b642ab-4aa7-47b3-a20d-2fac66534497
+
+	/// Pearson correlation of the ticked variable with CL1.PV over the 30-minute blocks in context
+	measure 'CL Scatter Pearson r' =
+			VAR pts =
+			    FILTER (
+			        ADDCOLUMNS (
+			            CALCULATETABLE ( VALUES ( 'Trend'[DateTime 30min] ), REMOVEFILTERS ( DimTag ) ),
+			            "@x", [CL Scatter X Value],
+			            "@y", [CL1.PV (kW)]
+			        ),
+			        NOT ISBLANK ( [@x] ) && NOT ISBLANK ( [@y] )
+			    )
+			VAR mx = AVERAGEX ( pts, [@x] )
+			VAR my = AVERAGEX ( pts, [@y] )
+			VAR cov = SUMX ( pts, ( [@x] - mx ) * ( [@y] - my ) )
+			VAR vx = SUMX ( pts, ( [@x] - mx ) ^ 2 )
+			VAR vy = SUMX ( pts, ( [@y] - my ) ^ 2 )
+			RETURN DIVIDE ( cov, SQRT ( vx ) * SQRT ( vy ) )
+		formatString: 0.0000
+		lineageTag: 6c48aa89-6676-4d18-909a-addb54a7e57c
+
+	/// Least-squares slope: kW of CL1.PV per 1 unit of the ticked variable
+	measure 'CL Scatter Slope' =
+			VAR pts =
+			    FILTER (
+			        ADDCOLUMNS (
+			            CALCULATETABLE ( VALUES ( 'Trend'[DateTime 30min] ), REMOVEFILTERS ( DimTag ) ),
+			            "@x", [CL Scatter X Value],
+			            "@y", [CL1.PV (kW)]
+			        ),
+			        NOT ISBLANK ( [@x] ) && NOT ISBLANK ( [@y] )
+			    )
+			VAR mx = AVERAGEX ( pts, [@x] )
+			VAR my = AVERAGEX ( pts, [@y] )
+			VAR cov = SUMX ( pts, ( [@x] - mx ) * ( [@y] - my ) )
+			VAR vx = SUMX ( pts, ( [@x] - mx ) ^ 2 )
+			VAR vy = SUMX ( pts, ( [@y] - my ) ^ 2 )
+			RETURN DIVIDE ( cov, vx )
+		formatString: #,0.0000
+		lineageTag: 2a7e43af-9902-43ca-941d-96fe01aa90e3
+
+	measure 'CL Scatter Points' =
+			VAR pts =
+			    FILTER (
+			        ADDCOLUMNS (
+			            CALCULATETABLE ( VALUES ( 'Trend'[DateTime 30min] ), REMOVEFILTERS ( DimTag ) ),
+			            "@x", [CL Scatter X Value],
+			            "@y", [CL1.PV (kW)]
+			        ),
+			        NOT ISBLANK ( [@x] ) && NOT ISBLANK ( [@y] )
+			    )
+			VAR mx = AVERAGEX ( pts, [@x] )
+			VAR my = AVERAGEX ( pts, [@y] )
+			VAR cov = SUMX ( pts, ( [@x] - mx ) * ( [@y] - my ) )
+			VAR vx = SUMX ( pts, ( [@x] - mx ) ^ 2 )
+			VAR vy = SUMX ( pts, ( [@y] - my ) ^ 2 )
+			RETURN COUNTROWS ( pts )
+		formatString: #,0
+		lineageTag: 0b458627-0e1b-4e8c-944a-3aea2d806cc4
+
+	measure 'CL Scatter Strength' =
+			VAR r = [CL Scatter Pearson r]
+			VAR a = ABS ( r )
+			RETURN
+			    IF (
+			        ISBLANK ( r ), "Select a variable",
+			        IF (
+			            a < 0.2, "Very weak / no link",
+			            SWITCH ( TRUE (), a >= 0.8, "Very strong", a >= 0.6, "Strong", a >= 0.4, "Moderate", "Weak" )
+			                & IF ( r > 0, " positive", " negative" )
+			        )
+			    )
+		lineageTag: 43ccdfac-514e-442a-a587-e3e03713d0ff
+
+	/// Change in CL1.PV for a sensible step of the ticked variable, e.g. "+123.4 kW (+1.6%) per +1 °C"
+	measure 'CL Scatter Effect text' =
+			VAR unit = SELECTEDVALUE ( 'CL Combined Variables'[Unit] )
+			VAR step = SWITCH ( unit, "kW/RT", 0.01, "m³/h", 100, 1 )
+			VAR dCL = [CL Scatter Slope] * step
+			VAR pct = DIVIDE ( dCL, CALCULATE ( [CL1.PV (kW)] ) )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( dCL ),
+			        FORMAT ( dCL, "+#,0.0;-#,0.0" ) & " kW (" & FORMAT ( pct, "+0.0%;-0.0%" ) & ") per +" & step & " " & unit
+			    )
+		lineageTag: 0430c4e3-80ad-484c-867e-0cb939b0d6d5
+
+	measure 'CL Scatter Chart Title' =
+			VAR short = SELECTEDVALUE ( 'CL Combined Variables'[Short] )
+			RETURN
+			    IF (
+			        ISBLANK ( short ),
+			        "Tick a variable on the left",
+			        "CL1.PV vs " & short & "   |   Pearson r = " & FORMAT ( [CL Scatter Pearson r], "0.0000" ) & " (" & [CL Scatter Strength] & ")"
+			    ) & "   |   " & [Period Title]
+		lineageTag: e302e806-fccc-4d00-a49c-fc593e7e9705
+
+	measure 'CL Scatter Page Title' =
+			VAR s = MIN ( DimPeriod[StartDateTime] )
+			VAR e = MAX ( DimPeriod[EndDateTime] )
+			VAR span =
+			    IF (
+			        FORMAT ( s, "mmm yyyy" ) = FORMAT ( e, "mmm yyyy" ),
+			        FORMAT ( s, "mmm yyyy" ),
+			        FORMAT ( s, "mmm yyyy" ) & " - " & FORMAT ( e, "mmm yyyy" )
+			    )
+			RETURN "MT Chiller 1 - Pearson Correlation: CL1.PV (Cooling Load) vs Variable (" & span & ")"
+		lineageTag: 8c4749be-ade8-48e8-8426-ec2dc871a2c3
+
+	column Period
+		dataType: string
+		lineageTag: 0c874759-923c-49a7-ad1f-0df3d50a4610
+		summarizeBy: none
+		sourceColumn: Period
+
+	column DateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 84a5e57c-4394-4c99-a666-cbb0962149da
+		summarizeBy: none
+		sourceColumn: DateTime
+
+	column Tag
+		dataType: string
+		lineageTag: d4db7026-7897-4054-8f85-f63c23c90f96
+		summarizeBy: none
+		sourceColumn: Tag
+
+	column Value
+		dataType: double
+		formatString: #,0.000
+		lineageTag: eb167678-ebb4-4cd9-84c2-3368d0825c64
+		summarizeBy: none
+		sourceColumn: Value
+
+	/// Timestamp rounded down to its 30-minute block; plot against this for a fast, smooth trend
+	column 'DateTime 30min' = CONVERT ( ROUNDDOWN ( 'Trend'[DateTime] * 48 + 0.000001, 0 ) / 48, DATETIME )
+		dataType: dateTime
+		formatString: d mmm yy, h am/pm
+		lineageTag: 2d9f6b3e-7c1a-4e58-b0d2-6a4c8e2f1b66
+		summarizeBy: none
+
+	partition Trend = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(ExcelFilePath), null, true),
+				    SelectedTags = {"C10A1_1_C101C_MTCHW_CH01_CL1.PV", "C10A1_1_C101C_MTCHW_CH01_EF.PV", "C10A1_1_C101C_MTCHW_CH01_EF.PV2", "C10A1_1_C101C_MTCHW_CH01_FIT1.PV", "C10A1_1_C101C_MTCHW_CH01_FIT2.PV", "C10A1_1_C101C_MTCHW_CH01_TIT1.PV", "C10A1_1_C101C_MTCHW_CH01_TIT2.PV", "C10A1_1_C101C_MTCHW_CH01_TIT3.PV", "C10A1_1_C101C_MTCHW_CH01_TIT4.PV"},
+				    HistSheets = Table.SelectRows(Source, each [Kind] = "Sheet" and Text.StartsWith([Name], "2.Hist Value")),
+				    AddLong = Table.AddColumn(HistSheets, "Long", each
+				        let
+				            Promoted = Table.PromoteHeaders([Data], [PromoteAllScalars = true]),
+				            Kept = Table.SelectColumns(Promoted, {"DateTime"} & SelectedTags, MissingField.UseNull),
+				            Unpivoted = Table.UnpivotOtherColumns(Kept, {"DateTime"}, "Tag", "Value")
+				        in
+				            Unpivoted),
+				    AddPeriod = Table.AddColumn(AddLong, "Period", each "Hist_Value" & Text.AfterDelimiter([Name], "Hist Value"), type text),
+				    Slim = Table.SelectColumns(AddPeriod, {"Period", "Long"}),
+				    Expanded = Table.ExpandTableColumn(Slim, "Long", {"DateTime", "Tag", "Value"}),
+				    Typed = Table.TransformColumnTypes(Expanded, {{"DateTime", type datetime}, {"Tag", type text}, {"Value", type number}}),
+				    NoNulls = Table.SelectRows(Typed, each [Value] <> null and [DateTime] <> null)
+				in
+				    NoNulls
+
+	annotation PBI_ResultType = Table
+

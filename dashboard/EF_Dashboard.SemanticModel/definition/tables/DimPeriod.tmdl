@@ -1,0 +1,80 @@
+table DimPeriod
+	lineageTag: 8c518b17-b358-4b40-87fd-e15f0f70f34a
+
+	column Period
+		dataType: string
+		lineageTag: 9ee2c998-0098-45ad-9409-6dcff26133a8
+		summarizeBy: none
+		sourceColumn: Period
+		sortByColumn: PeriodOrder
+
+	column StartDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: de7f7282-d0f4-449d-9d2d-bfe40b24e31c
+		summarizeBy: none
+		sourceColumn: StartDateTime
+
+	column EndDateTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 95cb671d-62e3-426f-b326-b43619ea2aad
+		summarizeBy: none
+		sourceColumn: EndDateTime
+
+	column DateRange
+		dataType: string
+		lineageTag: bb076fa8-cb21-4b5e-9f6f-6861b393a924
+		summarizeBy: none
+		sourceColumn: DateRange
+		sortByColumn: PeriodOrder
+
+	column PeriodTitle
+		dataType: string
+		lineageTag: 6af7d580-5cfa-4727-95c3-eb4fd07ccf16
+		summarizeBy: none
+		sourceColumn: PeriodTitle
+		sortByColumn: PeriodOrder
+
+	column PeriodOrder
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6b941786-4b3c-4b7c-bdaf-c98859823e03
+		summarizeBy: none
+		sourceColumn: PeriodOrder
+
+	/// Period name with its dates, e.g. "Hist_Value1 (1-2 Feb 2024)"
+	column PeriodLabel
+		dataType: string
+		lineageTag: 5d2e8a71-3c94-4f0b-9a6d-e1b7c4f82a35
+		summarizeBy: none
+		sourceColumn: PeriodLabel
+		sortByColumn: PeriodOrder
+
+	partition DimPeriod = m
+		mode: import
+		source =
+				let
+				    Source = Trend,
+				    Grouped = Table.Group(Source, {"Period"}, {
+				        {"StartDateTime", each List.Min([DateTime]), type datetime},
+				        {"EndDateTime", each List.Max([DateTime]), type datetime}}),
+				    AddRange = Table.AddColumn(Grouped, "DateRange", each
+				        DateTime.ToText([StartDateTime], [Format = "dd MMM yyyy", Culture = "en-US"]) & " - " &
+				        DateTime.ToText([EndDateTime], [Format = "dd MMM yyyy", Culture = "en-US"]), type text),
+				    AddTitle = Table.AddColumn(AddRange, "PeriodTitle", each [Period] & "  |  " & [DateRange], type text),
+				    AddOrder = Table.AddColumn(AddTitle, "PeriodOrder", each Number.FromText(Text.AfterDelimiter([Period], "Hist_Value")), Int64.Type),
+				    AddLabel = Table.AddColumn(AddOrder, "PeriodLabel", each
+				        let
+				            s = [StartDateTime],
+				            e = [EndDateTime],
+				            sameMonth = Date.Year(s) = Date.Year(e) and Date.Month(s) = Date.Month(e),
+				            range = if sameMonth
+				                then Text.From(Date.Day(s)) & "-" & DateTime.ToText(e, [Format = "d MMM yyyy", Culture = "en-US"])
+				                else DateTime.ToText(s, [Format = "d MMM yyyy", Culture = "en-US"]) & " - " & DateTime.ToText(e, [Format = "d MMM yyyy", Culture = "en-US"])
+				        in
+				            [Period] & " (" & range & ")", type text)
+				in
+				    AddLabel
+

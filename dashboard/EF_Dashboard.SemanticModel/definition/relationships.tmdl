@@ -1,0 +1,8 @@
+relationship 875a530f-d6d4-4a0e-aa89-bcf9d2830f95
+	fromColumn: Trend.Tag
+	toColumn: DimTag.Tag
+
+relationship 03595eb7-1888-41c0-8334-0870a95139be
+	fromColumn: Trend.Period
+	toColumn: DimPeriod.Period
+

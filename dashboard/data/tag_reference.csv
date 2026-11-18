@@ -1,0 +1,10 @@
+SortOrder,Tag,ShortName,Description,Unit,ReferenceValue
+1,C10A1_1_C101C_MTCHW_CH01_CL1.PV,CL1.PV,(CUP) Level 1 MT Chiller 1 Cooling Load,kW,7741.627441
+2,C10A1_1_C101C_MTCHW_CH01_EF.PV,EF.PV,(CUP) Level 1 MT Chiller 1 Efficiency,%,85.0550766
+3,C10A1_1_C101C_MTCHW_CH01_EF.PV2,EF.PV2,(CUP) Level 1 MT Chiller 1 Efficiency,kW/RT,0.410726458
+4,C10A1_1_C101C_MTCHW_CH01_FIT1.PV,FIT1.PV,(CUP) Level 1 MT Chiller 1 Condenser Water Return Flow Meter,m³/h,1343.677612
+5,C10A1_1_C101C_MTCHW_CH01_FIT2.PV,FIT2.PV,(CUP) Level 1 MT Chiller 1 Chilled Water Supply Flow Meter,m³/h,1178.059814
+6,C10A1_1_C101C_MTCHW_CH01_TIT1.PV,TIT1.PV,(CUP) Level 1 MT Chiller 1 Condenser Water Supply Temperature,°C,30.43077278
+7,C10A1_1_C101C_MTCHW_CH01_TIT2.PV,TIT2.PV,(CUP) Level 1 MT Chiller 1 Condenser Water Return Temperature,°C,35.89048004
+8,C10A1_1_C101C_MTCHW_CH01_TIT3.PV,TIT3.PV,(CUP) Level 1 MT Chiller 1 Chilled Water Supply Temperature,°C,12.81286144
+9,C10A1_1_C101C_MTCHW_CH01_TIT4.PV,TIT4.PV,(CUP) Level 1 MT Chiller 1 Chilled Water Return Temperature,°C,18.46788216

@@ -1,0 +1,10 @@
+expression ExcelFilePath = "D:\XenOptimization\20261016_benny - Copy.xlsx" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: a41588f1-65c6-43ff-a54b-62340992bea3
+
+	annotation PBI_ResultType = Text
+
+expression ReferenceFilePath = "D:\XenOptimization\dashboard\data\tag_reference.csv" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: f6c79b0f-8199-4353-909c-27ec32dd3af9
+
+	annotation PBI_ResultType = Text
+
